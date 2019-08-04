@@ -1,20 +1,50 @@
 #include <iostream>
+#include <regex>
 
-using namespace std;
+#ifndef _WIN32
+#define ending true
+#endif
+#ifndef __linux__
+#define ending false
+#endif
 
-int main()
+int main(int argc, char* argv[])
 {
+	try
+	{
+		if(argc > 1)
+		{
+			throw std::runtime_error("No Arguments Plz");
+		}
+	}
+	catch(const std::exception& e)
+	{
+		std::cerr << e.what() << '\n';
+		exit(0);
+	}
+	
 	int arr[11];
+	std::string text;
 	int max = 0;
+	std::regex p("[^0-9]");
 
-	cout << "Please enter 10 integer values" << endl;
+	std::cout << "Please enter 10 integer values" << std::endl;
 
 	for (int i = 0; i < 10; i++)
 	{
-		cin >> arr[i];
+		std::cin >> text;
+		if(regex_search(text, p))
+		{
+			std::cout << "Nope, try again" << std::endl;
+			i--;
+		}
+		else
+		{
+			arr[i] = stoi(text);
+		}
 	}
 
-	cout << "Executing Stalin Sort" << endl;
+	std::cout << "Executing Stalin Sort" << std::endl;
 
 	max = arr[0];
 
@@ -37,11 +67,14 @@ int main()
 	{
 		if (arr[i] != 0)
 		{
-			cout << arr[i] << endl;
+			std::cout << arr[i] << std::endl;
 		}
 	}
 
-	system("pause");
+	if(ending)
+	{
+		system("pause");
+	}
 
 	return 0;
 }
